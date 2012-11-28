@@ -1,11 +1,12 @@
-srvwd - serve working directory
+cachesrv - serve working directory
 -------------------------------
 cachesrv is a web server that serves the current working directory using a
 file cache to speed up commonly-accessed files.
 
 Dependencies
 ------------
-None.
+`cachesrv` is based on a [file
+cache](http://gokyle.github.com/filecache) I wrote in Go.
 
 Compatibility
 -------------
@@ -21,10 +22,10 @@ Installation
 
 Usage
 -----
-`cachesrv [options] [dir]`
+```
+cachesrv [options] [dir]
 
 Valid options:
-```
         -c certfile     specify the TLS certificate
         -e seconds      seconds to expire cache items after; 0 to never expire
                         due to time in cache
@@ -62,6 +63,6 @@ setgrp isn't implemented here, as no good solution exists in Go.
 History
 -------
 This is version 3.0.0 of the `srvwd` file server. The original version
-(the 1.x series) was written in C; a subsequent rewrite in Go (the 2.x)
-version used only the standard library to serve files. This version,
+(the 1.x series) was written in C; a subsequent rewrite in Go (the 2.x
+series) used only the standard library to serve files. This version,
 the 3.x series, uses a file cache to speed up commonly accessed files.
