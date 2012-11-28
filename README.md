@@ -62,7 +62,9 @@ setgrp isn't implemented here, as no good solution exists in Go.
 
 History
 -------
-This is version 3.0.0 of the `srvwd` file server. The original version
-(the 1.x series) was written in C; a subsequent rewrite in Go (the 2.x
-series) used only the standard library to serve files. This version,
-the 3.x series, uses a file cache to speed up commonly accessed files.
+This is version 3.0.0 of the `srvwd` file server. The [original
+version](http://tyrfingr.is/projects/srvwd/)
+(the 1.x series) was written in C; a subsequent [rewrite in
+Go](http://gokyle.github.com/srvwd) (the 2.x series) used only the standard
+library to serve files. This version, the 3.x series, uses a [file
+cache](http://gokyle.github.com/filecache) to speed up commonly accessed files.
