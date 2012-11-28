@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>cachesrv by gokyle</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>cachesrv</h1>
+        <p>Caching version of srvwd.</p>
+
+        <p class="view"><a href="https://github.com/gokyle/cachesrv">View the Project on GitHub <small>gokyle/cachesrv</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/gokyle/cachesrv/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/gokyle/cachesrv/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/gokyle/cachesrv">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p>cachesrv is a web server that serves the current working directory using a
+file cache to speed up commonly-accessed files.</p>
+
+<h2>Dependencies</h2>
+
+<p>None.</p>
+
+<h2>Compatibility</h2>
+
+<p><code>cachesrv</code> has been tested on the following operating systems:</p>
+
+<ul>
+<li>OpenBSD (5.2)</li>
+<li>OS X (10.8)</li>
+</ul><h2>Installation</h2>
+
+<p><code>go install</code> will install the binary to the <code>${GOROOT}/bin</code> directory.</p>
+
+<h2>Usage</h2>
+
+<pre><code>cachesrv [options] [dir]
+
+Valid options:
+        -c certfile     specify the TLS certificate
+        -e seconds      seconds to expire cache items after; 0 to never expire
+                        due to time in cache
+        -g seconds      seconds to delay between checks for expired items in the
+                        cache.
+        -k key          specify the TLS key
+        -n items        maximum number of files to store in cache
+        -p              the port to listen on
+        -r              the server should chroot to the target directory
+        -u user         the server should drop privileges to this user
+        -v              display the version and exit
+</code></pre>
+
+<p>Specifying a key and certificate will cause the server to listen in TLS
+mode. </p>
+
+<p>Use <code>^C</code> to halt the server.</p>
+
+<h2>Why require sudo for chroot?</h2>
+
+<p>From <a href="http://www.openbsd.org/cgi-bin/man.cgi?query=chroot&amp;apropos=0&amp;sektion=2&amp;manpath=OpenBSD+Current&amp;arch=i386&amp;format=ascii">chroot(2)</a>:</p>
+
+<pre><code> This call is restricted to the super-user.
+</code></pre>
+
+<p>The server uses root privileges to chroot to the target directory, then
+immediately drops privileges.</p>
+
+<h2>Known bugs / caveats</h2>
+
+<p>setgrp isn't implemented here, as no good solution exists in Go.</p>
+
+<h2>History</h2>
+
+<p>This is version 3.0.0 of the <code>srvwd</code> file server. The original version
+(the 1.x series) was written in C; a subsequent rewrite in Go (the 2.x
+series) used only the standard library to serve files. This version,
+the 3.x series, uses a file cache to speed up commonly accessed files.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/gokyle">gokyle</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
