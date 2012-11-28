@@ -33,7 +33,8 @@ file cache to speed up commonly-accessed files.</p>
 
 <h2>Dependencies</h2>
 
-<p>None.</p>
+<p><code>cachesrv</code> is based on a <a href="http://gokyle.github.com/filecache">file
+cache</a> I wrote in Go.</p>
 
 <h2>Compatibility</h2>
 
@@ -85,10 +86,12 @@ immediately drops privileges.</p>
 
 <h2>History</h2>
 
-<p>This is version 3.0.0 of the <code>srvwd</code> file server. The original version
-(the 1.x series) was written in C; a subsequent rewrite in Go (the 2.x
-series) used only the standard library to serve files. This version,
-the 3.x series, uses a file cache to speed up commonly accessed files.</p>
+<p>This is version 3.0.0 of the <code>srvwd</code> file server. The <a href="http://tyrfingr.is/projects/srvwd/">original
+version</a>
+(the 1.x series) was written in C; a subsequent <a href="http://gokyle.github.com/srvwd">rewrite in
+Go</a> (the 2.x series) used only the standard
+library to serve files. This version, the 3.x series, uses a <a href="http://gokyle.github.com/filecache">file
+cache</a> to speed up commonly accessed files.</p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/gokyle">gokyle</a></p>
