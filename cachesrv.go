@@ -15,7 +15,7 @@ import (
 	"time"
 )
 
-const VERSION = "3.0.0"
+const VERSION = "3.0.1"
 
 var handler func(http.ResponseWriter, *http.Request)
 
