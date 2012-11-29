@@ -27,10 +27,12 @@ cachesrv [options] [dir]
 
 Valid options:
         -c certfile     specify the TLS certificate
+        -d duration     dump cache stats duration; by default, this is turned
+                        off. Must be parsable with time.ParseDuration.
         -e seconds      seconds to expire cache items after; 0 to never expire
                         due to time in cache
-        -g seconds      seconds to delay between checks for expired items in the
-                        cache.
+        -g seconds      seconds to delay between checks for expired items in
+                        the cache.
         -k key          specify the TLS key
         -n items        maximum number of files to store in cache
         -p              the port to listen on
