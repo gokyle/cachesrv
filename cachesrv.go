@@ -17,6 +17,8 @@ import (
 
 const VERSION = "3.0.0"
 
+var handler func(http.ResponseWriter, *http.Request)
+
 var (
 	cache        *filecache.FileCache
 	path_regexp  = regexp.MustCompile("^/(.*)$")
@@ -25,9 +27,9 @@ var (
 )
 
 func init() {
-	cache = filecache.NewCache()
+	cache = new(filecache.FileCache)
 	filecache.DefaultExpireItem = 0
-	cache.Start()
+	handler = filecache.HttpHandler(cache)
 }
 
 func Path(r *http.Request) (path string) {
@@ -50,7 +52,7 @@ func Dispatch(w http.ResponseWriter, r *http.Request) {
 	} else if fi.Size() > cache.MaxSize {
 		http.ServeFile(w, r, Path(r))
 	} else {
-	        cache.HttpWriteFile(w, r)
+		cache.HttpWriteFile(w, r)
 	}
 	return
 }
@@ -58,8 +60,10 @@ func Dispatch(w http.ResponseWriter, r *http.Request) {
 func displayCacheStats() {
 	fmt.Printf("-----[ cache stats: %s ]-----\n",
 		time.Now().Format("2006-01-02 15:04:05"))
-	fmt.Println("files cached: ", cache.Size())
-	fmt.Printf("cache size: %d bytes\n", cache.FileSize())
+	fmt.Printf("files cached: %d (max: %d)\n", cache.Size(),
+		cache.MaxItems)
+	fmt.Printf("cache size: %d bytes (will cache files up to %d bytes)\n",
+		cache.FileSize(), cache.MaxSize)
 	cachedFiles := cache.StoredFiles()
 	fmt.Println("[ cached files ]")
 	for _, name := range cachedFiles {
@@ -81,6 +85,9 @@ func main() {
 	}
 
 	fCert := flag.String("c", "", "TLS certificate file")
+	fDumpCache := flag.String("d", "", "dump cache stats duration; by "+
+		"default, this is turned off. Must be parsable with "+
+		"time.ParseDuration.")
 	fExpire := flag.Int("e", filecache.DefaultExpireItem,
 		"maximum number of seconds between accesses a file can stay "+
 			"in the cache")
@@ -117,6 +124,21 @@ func main() {
 		srv_ssl = true
 	}
 
+	if !(*fDumpCache == "") {
+		go func() {
+			dur, err := time.ParseDuration(*fDumpCache)
+			if err != nil {
+				fmt.Printf("[-] couldn't parse %s: %s\n",
+					*fDumpCache, err.Error())
+				return
+			}
+			for {
+				displayCacheStats()
+				<-time.After(dur)
+			}
+		}()
+	}
+
 	cache.MaxItems = *fItems
 	cache.ExpireItem = *fExpire
 	cache.Every = *fGarbage
@@ -128,7 +150,8 @@ func main() {
 	srv_port = *fPort
 	srv_addr := fmt.Sprintf(":%d", srv_port)
 	fmt.Printf("serving %s on %s\n", srv_wd, srv_addr)
-	http.HandleFunc("/", Dispatch)
+	cache.Start()
+	http.HandleFunc("/", handler)
 	cache.Start()
 	if srv_ssl {
 		log.Fatal(http.ListenAndServeTLS(srv_addr, *fCert, *fKey, nil))
